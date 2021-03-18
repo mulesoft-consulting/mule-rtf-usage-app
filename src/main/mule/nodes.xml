@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	MuleSoft RTF Usage API v1
+	Author: Steve Roberts (steve.roberts@mulesoft.com)
+	- - -
+	MIT License
+
+	Copyright (c) 2021 MuleSoft Inc.
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+-->
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<flow name="getNodesFlow" doc:id="eb3f4757-f9c2-4b6b-aaf6-2d6099c3adf5" >
+		<http:request method="GET" doc:name="Call apiserver" doc:id="230636ac-d41c-4b2f-a03b-9f74f62c2853" path="/nodes" config-ref="k8s_apiserver">
+		</http:request>
+		<logger level="DEBUG" doc:name="Payload Logger" doc:id="6703613c-e204-439e-ba43-7b7aa913e3c3" message="#[%dw 2.0
+output application/json
+---
+{
+	payload: payload
+}]" category="payload"/>
+		<ee:transform doc:name="Format response" doc:id="227895f5-bd83-4e8b-b646-b2df8ec4c1a6">
+			<ee:message>
+				<ee:set-payload ><![CDATA[%dw 2.0
+import functions as f
+output application/json
+---
+//Look for worker_node nodes only
+payload.items filter $.metadata.labels.role == "worker_node"
+	// Map output payload
+	map {
+		name: $.metadata.name,
+		node_ip: $.status.addresses[?($."type" == "InternalIP")][0].address,
+		cpu_millis: f::parse_cpu($.status.allocatable.cpu),
+		memory_mb: f::parse_memory($.status.allocatable.memory)
+	}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="604f149f-064f-434a-9d18-32d25fb00d59" >
+				<ee:transform doc:name="Set httpStatus" doc:id="b5b15067-fe3c-4cf7-a5d7-f3ff9a15def2" >
+					<ee:message >
+						<ee:set-attributes ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"httpStatus": 500
+}]]></ee:set-attributes>
+					</ee:message>
+				</ee:transform>
+				<ee:transform doc:name="Build response" doc:id="2c0ddb0a-761c-400e-82e2-3eb0e400a16c" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"error": error.errorType,
+	"message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

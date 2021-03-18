@@ -1,0 +1,20 @@
+[
+    {
+        "name": "rtf-stats-78fdd7f9f7-6qvw7",
+        "application": "rtf-stats",
+        "business_group_id": "12345678-abcd-abcd-abcd-123456789012",
+        "environment_id": "12345678-abcd-abcd-abcd-123456789012",
+        "status": "Running",
+        "started_time": "2021-03-17T19:26:14Z",
+        "uptime_mins": 181,
+        "cpu_millis": {
+            "requests": 200,
+            "limits": 550
+        },
+        "memory_mb": {
+            "requests": 1050,
+            "limits": 1070
+        },
+        "ip_addr": "10.0.0.1"
+    }
+]

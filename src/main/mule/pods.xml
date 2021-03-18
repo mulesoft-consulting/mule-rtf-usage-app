@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	MuleSoft RTF Usage API v1
+	Author: Steve Roberts (steve.roberts@mulesoft.com)
+	- - -
+	MIT License
+
+	Copyright (c) 2021 MuleSoft Inc.
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+-->
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getPodsFlow" doc:id="ea93c864-6bd2-4f38-afe8-32d85c62e856" >
+		<http:request method="GET" doc:name="Call apiserver" doc:id="08823165-851f-4869-89fb-105f924e82f4" path="/pods" config-ref="k8s_apiserver">
+		</http:request>
+		<logger level="DEBUG" doc:name="Payload Logger" doc:id="3025e3e0-648f-4c5f-9407-0e55b7c35ccf" message="#[%dw 2.0
+output application/json
+---
+{
+	payload: payload
+}]" category="payload"/>
+		<ee:transform doc:name="Format response" doc:id="9aade1e6-053a-4b95-ab5c-817e3cc4357c">
+			<ee:message>
+				<ee:set-payload ><![CDATA[%dw 2.0
+import functions as f
+output application/json
+
+---
+//Look for MuleApplication pods only
+payload.items filter $.metadata.labels."type" == "MuleApplication"
+	// Exclude pods that aren't in a "ready" state
+	filter $.status.containerStatuses[?($.name == "app")][0].ready
+		// Map output payload
+		map {
+			name: $.metadata.name,
+		    application: $.metadata.labels.app,
+		    business_group_id: $.metadata.labels.organization,
+		    environment_id: $.metadata.namespace,
+		    status: $.status.phase,
+		    started_time: $.status.startTime,
+		    uptime_mins: (now() - $.status.startTime) as Number {unit:"minutes"},
+		    cpu_millis: {
+		        requests: sum($.spec.containers.resources..requests.cpu map f::parse_cpu($)),
+		        limits: sum($.spec.containers.resources..limits.cpu map f::parse_cpu($))
+		    },
+		    memory_mb: {
+		        requests: sum($.spec.containers.resources..requests.memory map f::parse_memory($)),
+		        limits: sum($.spec.containers.resources..limits.memory map f::parse_memory($))
+		    },
+		    node_ip: $.status.hostIP
+		}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2f367b33-6401-4100-9c5c-2a371d0b7bc4" >
+				<ee:transform doc:name="Set httpStatus" doc:id="63e6da97-d930-4c3d-834d-41b381bb773a" >
+					<ee:message >
+						<ee:set-attributes ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"httpStatus": 500
+}]]></ee:set-attributes>
+					</ee:message>
+				</ee:transform>
+				<ee:transform doc:name="Build response" doc:id="a0d93492-ec6f-435e-9bb1-a7aa3cd331f1" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"error": error.errorType,
+	"message": error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

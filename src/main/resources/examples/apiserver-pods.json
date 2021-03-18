@@ -1,0 +1,2053 @@
+{
+    "kind": "PodList",
+    "apiVersion": "v1",
+    "metadata": {
+        "selfLink": "/api/v1/pods",
+        "resourceVersion": "17206740"
+    },
+    "items": [
+        {
+            "metadata": {
+                "name": "rtf-stats-6ff94654-2k7lz",
+                "generateName": "rtf-stats-6ff94654-",
+                "namespace": "12345678-abcd-abcd-abcd-123456789012",
+                "selfLink": "/api/v1/namespaces/12345678-abcd-abcd-abcd-123456789012/pods/rtf-stats-6ff94654-2k7lz",
+                "uid": "8647455d-8733-11eb-bc2a-0af52bfe85b0",
+                "resourceVersion": "17206258",
+                "creationTimestamp": "2021-03-17T15:14:53Z",
+                "labels": {
+                    "app": "rtf-stats",
+                    "environment": "12345678-abcd-abcd-abcd-123456789012",
+                    "master-org-id": "12345678-abcd-abcd-abcd-123456789012",
+                    "organization": "12345678-abcd-abcd-abcd-123456789012",
+                    "pod-template-hash": "6ff94654",
+                    "rtf.mulesoft.com/id": "12345678-abcd-abcd-abcd-123456789012",
+                    "rtf.mulesoft.com/version": "12345678-abcd-abcd-abcd-123456789012",
+                    "type": "MuleApplication"
+                },
+                "annotations": {
+                    "kubernetes.io/psp": "rtf-restricted",
+                    "mulesoft.com/resources": "[{\"destinationFile\":\"/opt/mule/apps/rtf-stats.jar\",\"url\":\"https://configuration-resolver.prod.cloudhub.io/api/v1/deployments/12345678-abcd-abcd-abcd-123456789012/assets/abcdefg\"},{\"destinationFile\":\"/opt/mule/conf/rtf-stats.yml\",\"url\":\"https://configuration-resolver.prod.cloudhub.io/api/v1/deployments/12345678-abcd-abcd-abcd-123456789012/configurations/abcdef\",\"accept\":\"application/x-yaml\"}]"
+                },
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "kind": "ReplicaSet",
+                        "name": "rtf-stats-6ff94654",
+                        "uid": "86407da6-8733-11eb-bc2a-0af52bfe85b0",
+                        "controller": true,
+                        "blockOwnerDeletion": true
+                    }
+                ]
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "podinfo",
+                        "downwardAPI": {
+                            "items": [
+                                {
+                                    "path": "annotations",
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.annotations"
+                                    }
+                                }
+                            ],
+                            "defaultMode": 420
+                        }
+                    },
+                    {
+                        "name": "overlay",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "tmp",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "mulelicense",
+                        "secret": {
+                            "secretName": "rtf-muleruntime-license",
+                            "items": [
+                                {
+                                    "key": "4",
+                                    "path": "muleLicenseKey.lic"
+                                }
+                            ],
+                            "defaultMode": 420
+                        }
+                    },
+                    {
+                        "name": "monitoring-certs",
+                        "secret": {
+                            "secretName": "rtf-monitoring-certificate",
+                            "defaultMode": 420,
+                            "optional": true
+                        }
+                    }
+                ],
+                "initContainers": [
+                    {
+                        "name": "init",
+                        "image": "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-app-init:v1.0.23",
+                        "resources": {},
+                        "volumeMounts": [
+                            {
+                                "name": "podinfo",
+                                "readOnly": true,
+                                "mountPath": "/etc/podinfo"
+                            },
+                            {
+                                "name": "overlay",
+                                "mountPath": "/mnt/overlay"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "capabilities": {
+                                "drop": [
+                                    "NET_ADMIN",
+                                    "SYS_ADMIN",
+                                    "SYS_CHROOT"
+                                ]
+                            },
+                            "runAsUser": 2020,
+                            "allowPrivilegeEscalation": false
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "app",
+                        "image": "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0:20210304-1",
+                        "ports": [
+                            {
+                                "name": "http",
+                                "containerPort": 8081,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "https",
+                                "containerPort": 8082,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "hazelcast",
+                                "containerPort": 5701,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "secretRef": {
+                                    "name": "custom-properties",
+                                    "optional": true
+                                }
+                            },
+                            {
+                                "secretRef": {
+                                    "name": "env-12345678-abcd-abcd-abcd-123456789012",
+                                    "optional": true
+                                }
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "APP_NAME",
+                                "value": "rtf-stats"
+                            },
+                            {
+                                "name": "RTF_ID",
+                                "value": "12345678-abcd-abcd-abcd-123456789012"
+                            },
+                            {
+                                "name": "NAMESPACE_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "MASTER_ORG_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['master-org-id']"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "ORG_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['organization']"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "ENV_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['environment']"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NODE_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "spec.nodeName"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "MULE_SECURE_PROPERTIES",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "name": "secure-properties",
+                                        "key": "properties",
+                                        "optional": true
+                                    }
+                                }
+                            },
+                            {
+                                "name": "INFLUX_PUBLISH_HEAP_METRICS_DISABLED",
+                                "value": "true"
+                            },
+                            {
+                                "name": "USE_PROXY_PROPERTIES",
+                                "value": "false"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "1000Mi"
+                            },
+                            "requests": {
+                                "cpu": "200m",
+                                "memory": "1000Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "overlay",
+                                "mountPath": "/mnt/overlay"
+                            },
+                            {
+                                "name": "tmp",
+                                "mountPath": "/tmp"
+                            },
+                            {
+                                "name": "mulelicense",
+                                "readOnly": true,
+                                "mountPath": "/license"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/readiness-probe.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 10,
+                            "timeoutSeconds": 5,
+                            "periodSeconds": 5,
+                            "successThreshold": 1,
+                            "failureThreshold": 3
+                        },
+                        "lifecycle": {
+                            "preStop": {
+                                "exec": {
+                                    "command": [
+                                        "sh",
+                                        "-c",
+                                        "sleep 5"
+                                    ]
+                                }
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "capabilities": {
+                                "drop": [
+                                    "NET_ADMIN",
+                                    "SYS_ADMIN",
+                                    "SYS_CHROOT"
+                                ]
+                            },
+                            "runAsUser": 2020,
+                            "readOnlyRootFilesystem": true,
+                            "allowPrivilegeEscalation": false
+                        }
+                    },
+                    {
+                        "name": "anypoint-monitoring",
+                        "image": "dkr.ecr.us-east-1.amazonaws.com/mulesoft/dias-anypoint-monitoring-sidecar:v1.2.0",
+                        "env": [
+                            {
+                                "name": "APP_NAME",
+                                "value": "rtf-stats"
+                            },
+                            {
+                                "name": "RTF_ID",
+                                "value": "12345678-abcd-abcd-abcd-123456789012"
+                            },
+                            {
+                                "name": "POD_CPU_LIMIT",
+                                "value": "500m"
+                            },
+                            {
+                                "name": "NAMESPACE_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "MASTER_ORG_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['master-org-id']"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "ORG_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['organization']"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "ENV_ID",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['environment']"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NODE_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "spec.nodeName"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "LOG_LOCATION",
+                                "value": "/mnt/overlay/opt/mule/logs/_metric.log"
+                            },
+                            {
+                                "name": "DATA_PATH",
+                                "value": "/mnt/overlay/am-data"
+                            },
+                            {
+                                "name": "PROXY_URL",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "name": "custom-properties",
+                                        "key": "MONITORING_PROXY",
+                                        "optional": true
+                                    }
+                                }
+                            },
+                            {
+                                "name": "INGEST_HOST",
+                                "value": "dias-ingestor-nginx.prod.cloudhub.io:5044"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "50m",
+                                "memory": "70Mi"
+                            },
+                            "requests": {
+                                "cpu": "0",
+                                "memory": "50Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "overlay",
+                                "mountPath": "/mnt/overlay"
+                            },
+                            {
+                                "name": "monitoring-certs",
+                                "mountPath": "/data/certs"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "FallbackToLogsOnError",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "capabilities": {
+                                "drop": [
+                                    "NET_ADMIN",
+                                    "SYS_ADMIN",
+                                    "SYS_CHROOT"
+                                ]
+                            },
+                            "runAsUser": 2001,
+                            "allowPrivilegeEscalation": false
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "serviceAccountName": "rtf-restricted",
+                "serviceAccount": "rtf-restricted",
+                "automountServiceAccountToken": false,
+                "nodeName": "10.0.0.1",
+                "securityContext": {},
+                "imagePullSecrets": [
+                    {
+                        "name": "rtf-pull-secret"
+                    }
+                ],
+                "affinity": {
+                    "podAntiAffinity": {
+                        "preferredDuringSchedulingIgnoredDuringExecution": [
+                            {
+                                "weight": 100,
+                                "podAffinityTerm": {
+                                    "labelSelector": {
+                                        "matchExpressions": [
+                                            {
+                                                "key": "rtf.mulesoft.com/id",
+                                                "operator": "In",
+                                                "values": [
+                                                    "12345678-abcd-abcd-abcd-123456789012"
+                                                ]
+                                            },
+                                            {
+                                                "key": "rtf.mulesoft.com/version",
+                                                "operator": "In",
+                                                "values": [
+                                                    "12345678-abcd-abcd-abcd-123456789012"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "topologyKey": "kubernetes.io/hostname"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "schedulerName": "default-scheduler",
+                "priority": 0,
+                "enableServiceLinks": true
+            },
+            "status": {
+                "phase": "Running",
+                "conditions": [
+                    {
+                        "type": "Initialized",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-03-17T15:15:01Z"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-03-17T15:16:28Z"
+                    },
+                    {
+                        "type": "ContainersReady",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-03-17T15:16:28Z"
+                    },
+                    {
+                        "type": "PodScheduled",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-03-17T15:14:53Z"
+                    }
+                ],
+                "hostIP": "10.0.0.1",
+                "podIP": "10.244.49.17",
+                "startTime": "2021-03-17T15:14:53Z",
+                "initContainerStatuses": [
+                    {
+                        "name": "init",
+                        "state": {
+                            "terminated": {
+                                "exitCode": 0,
+                                "reason": "Completed",
+                                "startedAt": "2021-03-17T15:14:54Z",
+                                "finishedAt": "2021-03-17T15:15:00Z",
+                                "containerID": "docker://e96dc1dbf0b306d64b32307319f4c54f5d58e42100092486748bf00c41dea12f"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-app-init:v1.0.23",
+                        "imageID": "docker-pullable://dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-app-init@sha256:b32fac07716b6978247554e62b94f3adf7538865e3f89b1d7f34ffbf7bd32899",
+                        "containerID": "docker://e96dc1dbf0b306d64b32307319f4c54f5d58e42100092486748bf00c41dea12f"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "name": "anypoint-monitoring",
+                        "state": {
+                            "running": {
+                                "startedAt": "2021-03-17T15:15:02Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "dkr.ecr.us-east-1.amazonaws.com/mulesoft/dias-anypoint-monitoring-sidecar:v1.2.0",
+                        "imageID": "docker-pullable://dkr.ecr.us-east-1.amazonaws.com/mulesoft/dias-anypoint-monitoring-sidecar@sha256:594a45f30d09ae628319d2a538bbc98181c9910a40ac6ebf3aed242878d718a5",
+                        "containerID": "docker://941da9b3732526bb5c7751ddc66d76ee8d08863117c140a9983a7bc9a52413c8"
+                    },
+                    {
+                        "name": "app",
+                        "state": {
+                            "running": {
+                                "startedAt": "2021-03-17T15:15:02Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0:20210304-1",
+                        "imageID": "docker-pullable://dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0@sha256:0fad31101f86a0ca75d86186798ff84022c89f75cd9d8ed54c544b387e5758f1",
+                        "containerID": "docker://f812559061cba4a201d7e81c15810d3fba576be86fa6bf078ed89e4ecdfe9990"
+                    }
+                ],
+                "qosClass": "Burstable"
+            }
+        },
+        {
+            "metadata": {
+                "name": "coredns-rp5s5",
+                "generateName": "coredns-",
+                "namespace": "kube-system",
+                "selfLink": "/api/v1/namespaces/kube-system/pods/coredns-rp5s5",
+                "uid": "8a65a40d-7137-11eb-bc2a-0af52bfe85b0",
+                "resourceVersion": "13419846",
+                "creationTimestamp": "2021-02-17T15:48:12Z",
+                "labels": {
+                    "controller-revision-hash": "6c6d4bfd46",
+                    "k8s-app": "kube-dns",
+                    "pod-template-generation": "1"
+                },
+                "annotations": {
+                    "kubernetes.io/psp": "coredns"
+                },
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "kind": "DaemonSet",
+                        "name": "coredns",
+                        "uid": "8a6351a8-7137-11eb-bc2a-0af52bfe85b0",
+                        "controller": true,
+                        "blockOwnerDeletion": true
+                    }
+                ]
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "config-volume",
+                        "configMap": {
+                            "name": "coredns",
+                            "items": [
+                                {
+                                    "key": "Corefile",
+                                    "path": "Corefile"
+                                }
+                            ],
+                            "defaultMode": 420
+                        }
+                    },
+                    {
+                        "name": "coredns-token-bgkwg",
+                        "secret": {
+                            "secretName": "coredns-token-bgkwg",
+                            "defaultMode": 420
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "coredns",
+                        "image": "leader.telekube.local:5000/coredns/coredns:1.2.6",
+                        "args": [
+                            "-conf",
+                            "/etc/coredns/Corefile"
+                        ],
+                        "ports": [
+                            {
+                                "name": "dns",
+                                "containerPort": 53,
+                                "protocol": "UDP"
+                            },
+                            {
+                                "name": "dns-tcp",
+                                "containerPort": 53,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "metrics",
+                                "containerPort": 9153,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "memory": "170Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "70Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "config-volume",
+                                "readOnly": true,
+                                "mountPath": "/etc/coredns"
+                            },
+                            {
+                                "name": "coredns-token-bgkwg",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "livenessProbe": {
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "timeoutSeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 5
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "capabilities": {
+                                "add": [
+                                    "NET_BIND_SERVICE"
+                                ],
+                                "drop": [
+                                    "all"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "allowPrivilegeEscalation": false
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "Default",
+                "nodeSelector": {
+                    "beta.kubernetes.io/os": "linux",
+                    "gravitational.io/k8s-role": "master"
+                },
+                "serviceAccountName": "coredns",
+                "serviceAccount": "coredns",
+                "nodeName": "10.0.0.1",
+                "securityContext": {},
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchFields": [
+                                        {
+                                            "key": "metadata.name",
+                                            "operator": "In",
+                                            "values": [
+                                                "10.0.0.1"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "schedulerName": "default-scheduler",
+                "tolerations": [
+                    {
+                        "operator": "Exists"
+                    },
+                    {
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/disk-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/memory-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unschedulable",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ],
+                "priorityClassName": "system-node-critical",
+                "priority": 2000001000,
+                "enableServiceLinks": true
+            },
+            "status": {
+                "phase": "Running",
+                "conditions": [
+                    {
+                        "type": "Initialized",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:12Z"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:14Z"
+                    },
+                    {
+                        "type": "ContainersReady",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:14Z"
+                    },
+                    {
+                        "type": "PodScheduled",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:12Z"
+                    }
+                ],
+                "hostIP": "10.0.0.1",
+                "podIP": "10.244.65.20",
+                "startTime": "2021-02-17T15:48:12Z",
+                "containerStatuses": [
+                    {
+                        "name": "coredns",
+                        "state": {
+                            "running": {
+                                "startedAt": "2021-02-17T15:48:13Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "leader.telekube.local:5000/coredns/coredns:1.2.6",
+                        "imageID": "docker-pullable://leader.telekube.local:5000/coredns/coredns@sha256:5bec1a83dbee7e2c1b531fbc5dc1b041835c00ec249bcf6b165e1d597dd279fa",
+                        "containerID": "docker://1c97f35c3d7d508ef5490963693b5bef5306a0862bbb6e25f2260b3679717b6a"
+                    }
+                ],
+                "qosClass": "Burstable"
+            }
+        },
+        {
+            "metadata": {
+                "name": "coredns-worker-r7wcq",
+                "generateName": "coredns-worker-",
+                "namespace": "kube-system",
+                "selfLink": "/api/v1/namespaces/kube-system/pods/coredns-worker-r7wcq",
+                "uid": "8fcf95fb-7137-11eb-bc2a-0af52bfe85b0",
+                "resourceVersion": "13419899",
+                "creationTimestamp": "2021-02-17T15:48:21Z",
+                "labels": {
+                    "controller-revision-hash": "65d8678f89",
+                    "k8s-app": "kube-dns-worker",
+                    "pod-template-generation": "1"
+                },
+                "annotations": {
+                    "kubernetes.io/psp": "coredns"
+                },
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "kind": "DaemonSet",
+                        "name": "coredns-worker",
+                        "uid": "8fcc57ab-7137-11eb-bc2a-0af52bfe85b0",
+                        "controller": true,
+                        "blockOwnerDeletion": true
+                    }
+                ]
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "config-volume",
+                        "configMap": {
+                            "name": "coredns",
+                            "items": [
+                                {
+                                    "key": "Corefile",
+                                    "path": "Corefile"
+                                }
+                            ],
+                            "defaultMode": 420
+                        }
+                    },
+                    {
+                        "name": "coredns-token-bgkwg",
+                        "secret": {
+                            "secretName": "coredns-token-bgkwg",
+                            "defaultMode": 420
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "coredns",
+                        "image": "leader.telekube.local:5000/coredns/coredns:1.2.6",
+                        "args": [
+                            "-conf",
+                            "/etc/coredns/Corefile"
+                        ],
+                        "ports": [
+                            {
+                                "name": "dns",
+                                "containerPort": 53,
+                                "protocol": "UDP"
+                            },
+                            {
+                                "name": "dns-tcp",
+                                "containerPort": 53,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "metrics",
+                                "containerPort": 9153,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "memory": "170Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "70Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "config-volume",
+                                "readOnly": true,
+                                "mountPath": "/etc/coredns"
+                            },
+                            {
+                                "name": "coredns-token-bgkwg",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "livenessProbe": {
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "timeoutSeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 5
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "capabilities": {
+                                "add": [
+                                    "NET_BIND_SERVICE"
+                                ],
+                                "drop": [
+                                    "all"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "allowPrivilegeEscalation": false
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "Default",
+                "nodeSelector": {
+                    "beta.kubernetes.io/os": "linux",
+                    "gravitational.io/k8s-role": "node"
+                },
+                "serviceAccountName": "coredns",
+                "serviceAccount": "coredns",
+                "nodeName": "10.0.0.1",
+                "securityContext": {},
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchFields": [
+                                        {
+                                            "key": "metadata.name",
+                                            "operator": "In",
+                                            "values": [
+                                                "10.0.0.1"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "schedulerName": "default-scheduler",
+                "tolerations": [
+                    {
+                        "operator": "Exists"
+                    },
+                    {
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/disk-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/memory-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unschedulable",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ],
+                "priorityClassName": "system-node-critical",
+                "priority": 2000001000,
+                "enableServiceLinks": true
+            },
+            "status": {
+                "phase": "Running",
+                "conditions": [
+                    {
+                        "type": "Initialized",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:21Z"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:23Z"
+                    },
+                    {
+                        "type": "ContainersReady",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:23Z"
+                    },
+                    {
+                        "type": "PodScheduled",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:21Z"
+                    }
+                ],
+                "hostIP": "10.0.0.1",
+                "podIP": "10.244.49.10",
+                "startTime": "2021-02-17T15:48:21Z",
+                "containerStatuses": [
+                    {
+                        "name": "coredns",
+                        "state": {
+                            "running": {
+                                "startedAt": "2021-02-17T15:48:22Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "leader.telekube.local:5000/coredns/coredns:1.2.6",
+                        "imageID": "docker-pullable://leader.telekube.local:5000/coredns/coredns@sha256:5bec1a83dbee7e2c1b531fbc5dc1b041835c00ec249bcf6b165e1d597dd279fa",
+                        "containerID": "docker://22cb531eaa92345393da2d3dcc22b09556c172a7c33d34377c757422b1b7a6d9"
+                    }
+                ],
+                "qosClass": "Burstable"
+            }
+        },
+        {
+            "metadata": {
+                "name": "coredns-worker-zhkqx",
+                "generateName": "coredns-worker-",
+                "namespace": "kube-system",
+                "selfLink": "/api/v1/namespaces/kube-system/pods/coredns-worker-zhkqx",
+                "uid": "8fce34e3-7137-11eb-bc2a-0af52bfe85b0",
+                "resourceVersion": "13419896",
+                "creationTimestamp": "2021-02-17T15:48:21Z",
+                "labels": {
+                    "controller-revision-hash": "65d8678f89",
+                    "k8s-app": "kube-dns-worker",
+                    "pod-template-generation": "1"
+                },
+                "annotations": {
+                    "kubernetes.io/psp": "coredns"
+                },
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "kind": "DaemonSet",
+                        "name": "coredns-worker",
+                        "uid": "8fcc57ab-7137-11eb-bc2a-0af52bfe85b0",
+                        "controller": true,
+                        "blockOwnerDeletion": true
+                    }
+                ]
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "config-volume",
+                        "configMap": {
+                            "name": "coredns",
+                            "items": [
+                                {
+                                    "key": "Corefile",
+                                    "path": "Corefile"
+                                }
+                            ],
+                            "defaultMode": 420
+                        }
+                    },
+                    {
+                        "name": "coredns-token-bgkwg",
+                        "secret": {
+                            "secretName": "coredns-token-bgkwg",
+                            "defaultMode": 420
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "coredns",
+                        "image": "leader.telekube.local:5000/coredns/coredns:1.2.6",
+                        "args": [
+                            "-conf",
+                            "/etc/coredns/Corefile"
+                        ],
+                        "ports": [
+                            {
+                                "name": "dns",
+                                "containerPort": 53,
+                                "protocol": "UDP"
+                            },
+                            {
+                                "name": "dns-tcp",
+                                "containerPort": 53,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "metrics",
+                                "containerPort": 9153,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "memory": "170Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "70Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "config-volume",
+                                "readOnly": true,
+                                "mountPath": "/etc/coredns"
+                            },
+                            {
+                                "name": "coredns-token-bgkwg",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "livenessProbe": {
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "timeoutSeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 5
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "capabilities": {
+                                "add": [
+                                    "NET_BIND_SERVICE"
+                                ],
+                                "drop": [
+                                    "all"
+                                ]
+                            },
+                            "readOnlyRootFilesystem": true,
+                            "allowPrivilegeEscalation": false
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "Default",
+                "nodeSelector": {
+                    "beta.kubernetes.io/os": "linux",
+                    "gravitational.io/k8s-role": "node"
+                },
+                "serviceAccountName": "coredns",
+                "serviceAccount": "coredns",
+                "nodeName": "10.0.0.1",
+                "securityContext": {},
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchFields": [
+                                        {
+                                            "key": "metadata.name",
+                                            "operator": "In",
+                                            "values": [
+                                                "10.0.0.1"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "schedulerName": "default-scheduler",
+                "tolerations": [
+                    {
+                        "operator": "Exists"
+                    },
+                    {
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/disk-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/memory-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unschedulable",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ],
+                "priorityClassName": "system-node-critical",
+                "priority": 2000001000,
+                "enableServiceLinks": true
+            },
+            "status": {
+                "phase": "Running",
+                "conditions": [
+                    {
+                        "type": "Initialized",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:21Z"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:22Z"
+                    },
+                    {
+                        "type": "ContainersReady",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:22Z"
+                    },
+                    {
+                        "type": "PodScheduled",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:21Z"
+                    }
+                ],
+                "hostIP": "10.0.0.1",
+                "podIP": "10.244.32.9",
+                "startTime": "2021-02-17T15:48:21Z",
+                "containerStatuses": [
+                    {
+                        "name": "coredns",
+                        "state": {
+                            "running": {
+                                "startedAt": "2021-02-17T15:48:22Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "leader.telekube.local:5000/coredns/coredns:1.2.6",
+                        "imageID": "docker-pullable://leader.telekube.local:5000/coredns/coredns@sha256:5bec1a83dbee7e2c1b531fbc5dc1b041835c00ec249bcf6b165e1d597dd279fa",
+                        "containerID": "docker://cb31ad03a122c2ee5b667d89f7d493b9cf1925321c232eb4d4095655ba1a2f4e"
+                    }
+                ],
+                "qosClass": "Burstable"
+            }
+        },
+        {
+            "metadata": {
+                "name": "dns-app-update-591190-tc5b8",
+                "generateName": "dns-app-update-591190-",
+                "namespace": "kube-system",
+                "selfLink": "/api/v1/namespaces/kube-system/pods/dns-app-update-591190-tc5b8",
+                "uid": "81fdc136-7137-11eb-bc2a-0af52bfe85b0",
+                "resourceVersion": "13419905",
+                "creationTimestamp": "2021-02-17T15:47:58Z",
+                "labels": {
+                    "controller-uid": "81faa602-7137-11eb-bc2a-0af52bfe85b0",
+                    "job-name": "dns-app-update-591190"
+                },
+                "annotations": {
+                    "kubernetes.io/psp": "coredns"
+                },
+                "ownerReferences": [
+                    {
+                        "apiVersion": "batch/v1",
+                        "kind": "Job",
+                        "name": "dns-app-update-591190",
+                        "uid": "81faa602-7137-11eb-bc2a-0af52bfe85b0",
+                        "controller": true,
+                        "blockOwnerDeletion": true
+                    }
+                ]
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "bin",
+                        "hostPath": {
+                            "path": "/usr/bin",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "kubectl",
+                        "hostPath": {
+                            "path": "/usr/bin/kubectl",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "helm",
+                        "hostPath": {
+                            "path": "/usr/bin/helm",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "certs",
+                        "hostPath": {
+                            "path": "/etc/ssl/certs",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "gravity",
+                        "hostPath": {
+                            "path": "/var/lib/gravity/local",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "resources",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "state-dir",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "default-token-ht5tg",
+                        "secret": {
+                            "secretName": "default-token-ht5tg",
+                            "defaultMode": 420
+                        }
+                    }
+                ],
+                "initContainers": [
+                    {
+                        "name": "init",
+                        "image": "leader.telekube.local:5000/gravitational/debian-tall:stretch",
+                        "command": [
+                            "/bin/sh",
+                            "-c",
+                            "-e"
+                        ],
+                        "args": [
+                            "\nops_url=https://gravity-site.kube-system.svc.cluster.local:3009;\nif [ \"$GRAVITY_SITE_SERVICE_HOST:$GRAVITY_SITE_SERVICE_PORT_WEB\" != \":\" ]; then ops_url=https://$GRAVITY_SITE_SERVICE_HOST:$GRAVITY_SITE_SERVICE_PORT_WEB; fi;\n/opt/bin/gravity --state-dir=/tmp/state ops connect $ops_url adminagent@demo-fabric;\n/opt/bin/gravity --state-dir=/tmp/state package export \\\n\tgravitational.io/gravity:5.5.56 /tmp/state/gravity \\\n\t--file-mask=0755 \\\n\t--insecure \\\n\t--ops-url=$ops_url\n\nTMPDIR=/tmp/state /tmp/state/gravity --state-dir=/tmp/state app unpack \\\n\t--service-uid=996 \\\n\t--insecure --ops-url=$ops_url \\\n\tgravitational.io/dns-app:0.3.2 /var/lib/gravity/resources\n"
+                        ],
+                        "env": [
+                            {
+                                "name": "APP_PACKAGE",
+                                "value": "gravitational.io/dns-app:0.3.2"
+                            },
+                            {
+                                "name": "POD_IP",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "status.podIP"
+                                    }
+                                }
+                            }
+                        ],
+                        "resources": {},
+                        "volumeMounts": [
+                            {
+                                "name": "gravity",
+                                "mountPath": "/var/lib/gravity/local"
+                            },
+                            {
+                                "name": "state-dir",
+                                "mountPath": "/tmp/state"
+                            },
+                            {
+                                "name": "bin",
+                                "mountPath": "/opt/bin"
+                            },
+                            {
+                                "name": "kubectl",
+                                "mountPath": "/usr/local/bin/kubectl"
+                            },
+                            {
+                                "name": "helm",
+                                "mountPath": "/usr/local/bin/helm"
+                            },
+                            {
+                                "name": "certs",
+                                "mountPath": "/etc/ssl/certs"
+                            },
+                            {
+                                "name": "resources",
+                                "mountPath": "/var/lib/gravity/resources"
+                            },
+                            {
+                                "name": "default-token-ht5tg",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always"
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "hooks",
+                        "image": "leader.telekube.local:5000/dns-app-hooks:0.3.2",
+                        "args": [
+                            "update"
+                        ],
+                        "env": [
+                            {
+                                "name": "MANUAL_UPDATE",
+                                "value": "true"
+                            },
+                            {
+                                "name": "DEVMODE",
+                                "value": "false"
+                            },
+                            {
+                                "name": "GRAVITY_SERVICE_USER",
+                                "value": "996"
+                            }
+                        ],
+                        "resources": {},
+                        "volumeMounts": [
+                            {
+                                "name": "bin",
+                                "mountPath": "/opt/bin"
+                            },
+                            {
+                                "name": "kubectl",
+                                "mountPath": "/usr/local/bin/kubectl"
+                            },
+                            {
+                                "name": "helm",
+                                "mountPath": "/usr/local/bin/helm"
+                            },
+                            {
+                                "name": "certs",
+                                "mountPath": "/etc/ssl/certs"
+                            },
+                            {
+                                "name": "resources",
+                                "mountPath": "/var/lib/gravity/resources"
+                            },
+                            {
+                                "name": "default-token-ht5tg",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always"
+                    }
+                ],
+                "restartPolicy": "OnFailure",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "nodeSelector": {
+                    "gravitational.io/k8s-role": "master"
+                },
+                "serviceAccountName": "default",
+                "serviceAccount": "default",
+                "nodeName": "10.0.0.1",
+                "securityContext": {
+                    "runAsUser": 0,
+                    "runAsNonRoot": false,
+                    "fsGroup": 0
+                },
+                "schedulerName": "default-scheduler",
+                "tolerations": [
+                    {
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    }
+                ],
+                "priority": 0,
+                "enableServiceLinks": true
+            },
+            "status": {
+                "phase": "Succeeded",
+                "conditions": [
+                    {
+                        "type": "Initialized",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:01Z",
+                        "reason": "PodCompleted"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "False",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:24Z",
+                        "reason": "PodCompleted"
+                    },
+                    {
+                        "type": "ContainersReady",
+                        "status": "False",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:48:24Z",
+                        "reason": "PodCompleted"
+                    },
+                    {
+                        "type": "PodScheduled",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:47:58Z"
+                    }
+                ],
+                "hostIP": "10.0.0.1",
+                "podIP": "10.244.65.19",
+                "startTime": "2021-02-17T15:47:58Z",
+                "initContainerStatuses": [
+                    {
+                        "name": "init",
+                        "state": {
+                            "terminated": {
+                                "exitCode": 0,
+                                "reason": "Completed",
+                                "startedAt": "2021-02-17T15:47:59Z",
+                                "finishedAt": "2021-02-17T15:48:01Z",
+                                "containerID": "docker://fd6cc075e93aaa01518fa790a7c0ecb8c3048688aea245e443a9119ffa08a9cf"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "leader.telekube.local:5000/gravitational/debian-tall:stretch",
+                        "imageID": "docker-pullable://leader.telekube.local:5000/gravitational/debian-tall@sha256:53ea1f48e78071ffde6ffedea34c364433a0d492f2ff1c68d5f4c9af0c8ddfe0",
+                        "containerID": "docker://fd6cc075e93aaa01518fa790a7c0ecb8c3048688aea245e443a9119ffa08a9cf"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "name": "hooks",
+                        "state": {
+                            "terminated": {
+                                "exitCode": 0,
+                                "reason": "Completed",
+                                "startedAt": "2021-02-17T15:48:02Z",
+                                "finishedAt": "2021-02-17T15:48:23Z",
+                                "containerID": "docker://64c15bb0dd7707150a979b3965eca833fa2be3f7f9cdec41c98346310ebcf41e"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": false,
+                        "restartCount": 0,
+                        "image": "leader.telekube.local:5000/dns-app-hooks:0.3.2",
+                        "imageID": "docker-pullable://leader.telekube.local:5000/dns-app-hooks@sha256:7528655e07ed4b040e458ab8f1fe63b6d4ac1758e53baae82cc188f1f836edcf",
+                        "containerID": "docker://64c15bb0dd7707150a979b3965eca833fa2be3f7f9cdec41c98346310ebcf41e"
+                    }
+                ],
+                "qosClass": "BestEffort"
+            }
+        },
+        {
+            "metadata": {
+                "name": "gravity-site-6f75w",
+                "generateName": "gravity-site-",
+                "namespace": "kube-system",
+                "selfLink": "/api/v1/namespaces/kube-system/pods/gravity-site-6f75w",
+                "uid": "e24a22d7-7137-11eb-bc2a-0af52bfe85b0",
+                "resourceVersion": "13420830",
+                "creationTimestamp": "2021-02-17T15:50:39Z",
+                "labels": {
+                    "app": "gravity-site",
+                    "controller-revision-hash": "6f6b7d685b",
+                    "gravitational.io/critical-pod": "",
+                    "pod-template-generation": "1"
+                },
+                "annotations": {
+                    "kubernetes.io/psp": "privileged",
+                    "scheduler.alpha.kubernetes.io/critical-pod": "",
+                    "seccomp.security.alpha.kubernetes.io/pod": "docker/default"
+                },
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "kind": "DaemonSet",
+                        "name": "gravity-site",
+                        "uid": "e246f1f7-7137-11eb-bc2a-0af52bfe85b0",
+                        "controller": true,
+                        "blockOwnerDeletion": true
+                    }
+                ]
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "tmp",
+                        "hostPath": {
+                            "path": "/tmp",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "certs",
+                        "hostPath": {
+                            "path": "/etc/ssl/certs",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "docker-certs",
+                        "hostPath": {
+                            "path": "/etc/docker/certs.d",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "var-state",
+                        "hostPath": {
+                            "path": "/var/state",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "import",
+                        "hostPath": {
+                            "path": "/var/lib/gravity/local",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "config",
+                        "configMap": {
+                            "name": "gravity-site",
+                            "defaultMode": 420
+                        }
+                    },
+                    {
+                        "name": "opscenter-config",
+                        "configMap": {
+                            "name": "gravity-opscenter",
+                            "defaultMode": 420
+                        }
+                    },
+                    {
+                        "name": "secrets",
+                        "hostPath": {
+                            "path": "/var/lib/gravity/secrets",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "site",
+                        "hostPath": {
+                            "path": "/var/lib/gravity/site",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "registry",
+                        "hostPath": {
+                            "path": "/var/lib/gravity/planet/registry",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "kubectl",
+                        "hostPath": {
+                            "path": "/usr/bin/kubectl",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "kubeconfigs",
+                        "hostPath": {
+                            "path": "/etc/kubernetes",
+                            "type": ""
+                        }
+                    },
+                    {
+                        "name": "assets",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "gravity-site-token-mx5sc",
+                        "secret": {
+                            "secretName": "gravity-site-token-mx5sc",
+                            "defaultMode": 420
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "gravity-site",
+                        "image": "leader.telekube.local:5000/gravity-site:5.5.56",
+                        "command": [
+                            "/usr/bin/dumb-init",
+                            "/bin/sh",
+                            "/opt/start.sh"
+                        ],
+                        "ports": [
+                            {
+                                "name": "web",
+                                "hostPort": 3009,
+                                "containerPort": 3009,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "agents",
+                                "hostPort": 3007,
+                                "containerPort": 3007,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "sshproxy",
+                                "hostPort": 3023,
+                                "containerPort": 3023,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "sshtunnel",
+                                "hostPort": 3024,
+                                "containerPort": 3024,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "teleport",
+                                "hostPort": 3080,
+                                "containerPort": 3080,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "name": "profile",
+                                "hostPort": 6060,
+                                "containerPort": 6060,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "PATH",
+                                "value": "/opt/gravity:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+                            },
+                            {
+                                "name": "POD_IP",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "status.podIP"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "GRAVITY_CONFIG",
+                                "valueFrom": {
+                                    "configMapKeyRef": {
+                                        "name": "gravity-opscenter",
+                                        "key": "gravity.yaml"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "GRAVITY_TELEPORT_CONFIG",
+                                "valueFrom": {
+                                    "configMapKeyRef": {
+                                        "name": "gravity-opscenter",
+                                        "key": "teleport.yaml"
+                                    }
+                                }
+                            }
+                        ],
+                        "resources": {},
+                        "volumeMounts": [
+                            {
+                                "name": "certs",
+                                "mountPath": "/etc/ssl/certs"
+                            },
+                            {
+                                "name": "docker-certs",
+                                "mountPath": "/etc/docker/certs.d"
+                            },
+                            {
+                                "name": "var-state",
+                                "mountPath": "/var/state"
+                            },
+                            {
+                                "name": "import",
+                                "mountPath": "/opt/gravity-import"
+                            },
+                            {
+                                "name": "config",
+                                "mountPath": "/opt/gravity/config"
+                            },
+                            {
+                                "name": "opscenter-config",
+                                "mountPath": "/opt/gravity/opscenter"
+                            },
+                            {
+                                "name": "secrets",
+                                "mountPath": "/var/lib/gravity/secrets"
+                            },
+                            {
+                                "name": "secrets",
+                                "mountPath": "/var/lib/gravity/site/secrets"
+                            },
+                            {
+                                "name": "site",
+                                "mountPath": "/var/lib/gravity/site"
+                            },
+                            {
+                                "name": "registry",
+                                "mountPath": "/var/lib/gravity/planet/registry"
+                            },
+                            {
+                                "name": "tmp",
+                                "mountPath": "/tmp"
+                            },
+                            {
+                                "name": "kubectl",
+                                "mountPath": "/usr/bin/kubectl"
+                            },
+                            {
+                                "name": "kubeconfigs",
+                                "mountPath": "/etc/kubernetes"
+                            },
+                            {
+                                "name": "assets",
+                                "mountPath": "/usr/local/share/gravity"
+                            },
+                            {
+                                "name": "gravity-site-token-mx5sc",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "livenessProbe": {
+                            "httpGet": {
+                                "path": "/healthz",
+                                "port": 3010,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 600,
+                            "timeoutSeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 3
+                        },
+                        "readinessProbe": {
+                            "httpGet": {
+                                "path": "/readyz",
+                                "port": 3010,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 10,
+                            "timeoutSeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 3
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "imagePullPolicy": "Always"
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "nodeSelector": {
+                    "gravitational.io/k8s-role": "master"
+                },
+                "serviceAccountName": "gravity-site",
+                "serviceAccount": "gravity-site",
+                "nodeName": "10.0.0.1",
+                "hostNetwork": true,
+                "securityContext": {
+                    "runAsUser": 996
+                },
+                "affinity": {
+                    "nodeAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": {
+                            "nodeSelectorTerms": [
+                                {
+                                    "matchFields": [
+                                        {
+                                            "key": "metadata.name",
+                                            "operator": "In",
+                                            "values": [
+                                                "10.0.0.1"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                "schedulerName": "default-scheduler",
+                "tolerations": [
+                    {
+                        "key": "gravitational.io/runlevel",
+                        "operator": "Equal",
+                        "value": "system"
+                    },
+                    {
+                        "key": "node-role.kubernetes.io/master",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/disk-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/memory-pressure",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/unschedulable",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/network-unavailable",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "key": "node.kubernetes.io/out-of-disk",
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node.kubernetes.io/out-of-disk",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ],
+                "priorityClassName": "system-cluster-critical",
+                "priority": 2000000000,
+                "enableServiceLinks": true
+            },
+            "status": {
+                "phase": "Running",
+                "conditions": [
+                    {
+                        "type": "Initialized",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:50:39Z"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:51:02Z"
+                    },
+                    {
+                        "type": "ContainersReady",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:51:02Z"
+                    },
+                    {
+                        "type": "PodScheduled",
+                        "status": "True",
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2021-02-17T15:50:39Z"
+                    }
+                ],
+                "hostIP": "10.0.0.1",
+                "podIP": "10.0.0.1",
+                "startTime": "2021-02-17T15:50:39Z",
+                "containerStatuses": [
+                    {
+                        "name": "gravity-site",
+                        "state": {
+                            "running": {
+                                "startedAt": "2021-02-17T15:50:43Z"
+                            }
+                        },
+                        "lastState": {},
+                        "ready": true,
+                        "restartCount": 0,
+                        "image": "leader.telekube.local:5000/gravity-site:5.5.56",
+                        "imageID": "docker-pullable://leader.telekube.local:5000/gravity-site@sha256:fb581a40de4143134f496eb430fc10068f2be841cc01fa0de53f97ae4f9c8fc4",
+                        "containerID": "docker://107986a2ceae852eaccf1b23260badf900cb42e62711a998ded14922e4184127"
+                    }
+                ],
+                "qosClass": "BestEffort"
+            }
+        }
+    ]
+}

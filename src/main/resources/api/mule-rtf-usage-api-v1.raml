@@ -1,0 +1,117 @@
+#%RAML 1.0
+title: MuleSoft Runtime Fabric Usage API
+version: v1
+
+description: An API that exposes usage information about an Anypoint Runtime Fabric cluster, specifically node and pod data.
+mediaType: application/json
+
+securitySchemes:
+  basic:
+    description: Basic authorization
+    type: Basic Authentication
+  oauth2:
+    description: OAuth2.0 authorization
+    type: OAuth 2.0
+
+types:
+  error:
+    description: Error response
+    properties:
+      error:
+        type: string
+        description: The error that occurred
+      message:
+        type: string
+        description: A message or description about the error
+  
+  node:
+    description: A node within the RTF cluster
+    properties:
+      name:
+        type: string
+        description: Name provided to this node
+      node_ip:
+        type: string
+        description: Primary IP address associated with this node
+      cpu_millis:
+        type: number
+        description: Total number of allocatable CPU millicores in this node
+      memory_mb:
+        type: number
+        description: Total amount of allocatable memory (MB) in this node
+  
+  pod:
+    description: A pod running in the RTF cluster, each replica is a distinct pod
+    properties:
+      name:
+        type: string
+        description: Unique name of the pod
+      application:
+        type: string
+        description: Name of the MuleSoft application running in the pod
+      business_group_id:
+        type: string
+        description: Anypoint Business Group ID
+      environment_id:
+        type: string
+        description: Anypoint Environment ID
+      status:
+        type: string
+        description: Last known state of the pod
+      started_time:
+        type: datetime
+        description: Time this pod was started
+      uptime_mins:
+        type: number
+        description: Up time of this pod, in minutes
+      cpu_millis:
+        properties:
+          requests:
+            type: number
+            description: CPU millicores requested by this pod
+          limits:
+            type: number
+            description: CPU millicore limit for this pod
+      memory_mb:
+        properties:
+          requests:
+            type: number
+            description: Memory (MB) requested by this pod
+          limits:
+            type: number
+            description: Memory (MB) limit for this pod
+      node_ip:
+        type: string
+        description: IP address of the node running this pod
+
+/nodes:
+  description: Information about worker nodes in the RTF cluster.
+  get:
+    description: Gets all worker nodes in the cluster.
+    securedBy:
+      - basic
+      - oauth2
+    responses:
+      200:
+        body:
+          type: array
+          items: node
+      500:
+        body:
+          type: error
+
+/pods:
+  description: Information about Mule application pods in the RTF cluster. Does not include pods that are not in `Ready` state, or are not hosting a MuleSoft application. 
+  get:
+    description: Gets all active application pods in the cluster.
+    securedBy:
+      - basic
+      - oauth2
+    responses:
+      200:
+        body:
+          type: array
+          items: pod
+      500:
+        body:
+          type: error

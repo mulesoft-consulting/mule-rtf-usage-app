@@ -1,0 +1,945 @@
+{
+  "kind": "NodeList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/nodes",
+    "resourceVersion": "17311653"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "10.0.0.1",
+        "selfLink": "/api/v1/nodes/10.0.0.1",
+        "uid": "5acb6299-2348-11eb-b260-0af52bfe85b0",
+        "resourceVersion": "17311574",
+        "creationTimestamp": "2020-11-10T11:32:03Z",
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/os": "linux",
+          "gravitational.io/advertise-ip": "10.0.0.1",
+          "gravitational.io/k8s-role": "node",
+          "kubernetes.io/hostname": "10.0.0.1",
+          "node-role.kubernetes.io/node": "true",
+          "role": "worker_node"
+        },
+        "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        }
+      },
+      "spec": {
+
+      },
+      "status": {
+        "capacity": {
+          "cpu": "2",
+          "ephemeral-storage": "102350Mi",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "16008560Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "cpu": "2",
+          "ephemeral-storage": "101955665841",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "16008560Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "MemoryPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:46:31Z",
+            "lastTransitionTime": "2020-11-10T11:32:03Z",
+            "reason": "KubeletHasSufficientMemory",
+            "message": "kubelet has sufficient memory available"
+          },
+          {
+            "type": "DiskPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:46:31Z",
+            "lastTransitionTime": "2020-11-10T11:32:03Z",
+            "reason": "KubeletHasNoDiskPressure",
+            "message": "kubelet has no disk pressure"
+          },
+          {
+            "type": "PIDPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:46:31Z",
+            "lastTransitionTime": "2020-11-10T11:32:03Z",
+            "reason": "KubeletHasSufficientPID",
+            "message": "kubelet has sufficient PID available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2021-03-18T09:46:31Z",
+            "lastTransitionTime": "2021-02-17T15:47:14Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "InternalIP",
+            "address": "10.0.0.1"
+          },
+          {
+            "type": "Hostname",
+            "address": "10.0.0.1"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "7265fe765262551a676151a24c02b7b6",
+          "systemUUID": "EC26CFE7-BB65-6A38-17AB-C42BEC71B2EA",
+          "bootID": "0fc49304-9f6e-45e7-aa8f-2e418c709c74",
+          "kernelVersion": "3.10.0-1160.2.2.el7.x86_64",
+          "osImage": "Debian GNU/Linux 9 (stretch)",
+          "containerRuntimeVersion": "docker://18.6.2",
+          "kubeletVersion": "v1.13.13-gravitational.0",
+          "kubeProxyVersion": "v1.13.13-gravitational.0",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+        },
+        "images": [
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0@sha256:0fad31101f86a0ca75d86186798ff84022c89f75cd9d8ed54c544b387e5758f1",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0:20210304-1"
+            ],
+            "sizeBytes": 739033838
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0@sha256:b2ee0eef4b155e1b1bcd348e363925609c2250a8d7b109e2ab8923fb030cd392",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0:20201021"
+            ],
+            "sizeBytes": 706305153
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/dias-anypoint-monitoring-sidecar@sha256:594a45f30d09ae628319d2a538bbc98181c9910a40ac6ebf3aed242878d718a5",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/dias-anypoint-monitoring-sidecar:v1.2.0"
+            ],
+            "sizeBytes": 277656372
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-collector@sha256:5ac98559f2b1960dacfd9c1f139846b9a5ba0251c38b0c7af4630c6439805134",
+              "leader.telekube.local:5000/log-collector:5.0.7"
+            ],
+            "sizeBytes": 259626874
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-grafana@sha256:71f4716ea8189a2ebfa3abfc821ec52edff181e43579badde6e9a8a0f29f3246",
+              "leader.telekube.local:5000/monitoring-grafana:5.5.23"
+            ],
+            "sizeBytes": 252108513
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/anypoint-monitoring-sidecar@sha256:93d6f917d1ca215eab1a2555319d5319c482804e48ae27ed677f4972bef2565e",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/anypoint-monitoring-sidecar:v1.1.38"
+            ],
+            "sizeBytes": 232052867
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit@sha256:8578e93bde5286bed905f6dfdeeeb35e67e0a500f517743e7e4c1e067c3b0dea",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit:v1.2.29"
+            ],
+            "sizeBytes": 148795103
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit@sha256:d01c276af88ac3feaadec453a156009f649bceea633654919daa95fe3fb985ec",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit:v1.2.26"
+            ],
+            "sizeBytes": 148048920
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-forwarder@sha256:61277ee6b0816b24e8b7adaa82cbc4ee77c1cca6233619ca003b411f15202d37",
+              "leader.telekube.local:5000/log-forwarder:5.0.6"
+            ],
+            "sizeBytes": 124318896
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-forwarder@sha256:8b1606f8de127628b403e8327bd51d9f3e890af3a1de12ea30dbf5bc30e9511a",
+              "leader.telekube.local:5000/log-forwarder:5.0.7"
+            ],
+            "sizeBytes": 124318896
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-kapacitor@sha256:46f3b6183871d5a5eb5c2df421fae00a7851ee3572fd031f8fb68a88af0dc0b2",
+              "leader.telekube.local:5000/monitoring-kapacitor:5.5.23"
+            ],
+            "sizeBytes": 114303076
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-app-init@sha256:b32fac07716b6978247554e62b94f3adf7538865e3f89b1d7f34ffbf7bd32899",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-app-init:v1.0.23"
+            ],
+            "sizeBytes": 111258991
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-telegraf@sha256:44abd642a1e2a42c9ffe1ba2b4dd43a05ae14b8c7a36aba9c2244bb0d22fb05d",
+              "leader.telekube.local:5000/monitoring-telegraf:5.5.22"
+            ],
+            "sizeBytes": 79685385
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-telegraf@sha256:121e2edb4e763a913f302d184e80c750cf21dfe68c8d8841cb332d0be1ab5a5d",
+              "leader.telekube.local:5000/monitoring-telegraf:5.5.23"
+            ],
+            "sizeBytes": 79685385
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/watcher@sha256:48f10fc0c877058a6ad7bf205a69cddba2c9413e4d35337f6c6970791b141ca5",
+              "leader.telekube.local:5000/watcher:5.5.23"
+            ],
+            "sizeBytes": 57271131
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravitational/nethealth-dev@sha256:86615c3d2489aa7a1fc820a4ccb4668cae6b3df8ef7d479555d4caf60ff66007",
+              "leader.telekube.local:5000/gravitational/nethealth-dev:7.1.0"
+            ],
+            "sizeBytes": 52671616
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/coredns/coredns@sha256:5bec1a83dbee7e2c1b531fbc5dc1b041835c00ec249bcf6b165e1d597dd279fa",
+              "leader.telekube.local:5000/coredns/coredns:1.2.6"
+            ],
+            "sizeBytes": 40017418
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-influxdb@sha256:ab6186babd26bb8ce61eaea01eda3f9be8895a32465a3be101fbeaaa9e7d4ab1",
+              "leader.telekube.local:5000/monitoring-influxdb:5.5.23"
+            ],
+            "sizeBytes": 32303780
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gcr.io/google_containers/nettest@sha256:98b0f87c566e8506a0de4234fa0a20f95672d916218cec14c707b1bbdf004b6c",
+              "gcr.io/google_containers/nettest:1.8",
+              "leader.telekube.local:5000/gcr.io/google_containers/nettest:1.8"
+            ],
+            "sizeBytes": 25164808
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gcr.io/google_containers/pause@sha256:f04288efc7e65a84be74d4fc63e235ac3c6c603cf832e442e0bd3f240b10a91b",
+              "gcr.io/google_containers/pause:3.0",
+              "leader.telekube.local:5000/gcr.io/google_containers/pause:3.0"
+            ],
+            "sizeBytes": 746888
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "name": "10.0.0.1",
+        "selfLink": "/api/v1/nodes/10.0.0.1",
+        "uid": "f6f54e1d-2347-11eb-b260-0af52bfe85b0",
+        "resourceVersion": "17311628",
+        "creationTimestamp": "2020-11-10T11:29:15Z",
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/os": "linux",
+          "gravitational.io/advertise-ip": "10.0.0.1",
+          "gravitational.io/k8s-role": "node",
+          "kubernetes.io/hostname": "10.0.0.1",
+          "node-role.kubernetes.io/node": "true",
+          "role": "worker_node"
+        },
+        "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        }
+      },
+      "spec": {
+
+      },
+      "status": {
+        "capacity": {
+          "cpu": "2",
+          "ephemeral-storage": "102350Mi",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "16008552Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "cpu": "2",
+          "ephemeral-storage": "101955665841",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "16008552Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "MemoryPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:47:08Z",
+            "lastTransitionTime": "2020-11-10T11:29:15Z",
+            "reason": "KubeletHasSufficientMemory",
+            "message": "kubelet has sufficient memory available"
+          },
+          {
+            "type": "DiskPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:47:08Z",
+            "lastTransitionTime": "2020-11-10T11:29:15Z",
+            "reason": "KubeletHasNoDiskPressure",
+            "message": "kubelet has no disk pressure"
+          },
+          {
+            "type": "PIDPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:47:08Z",
+            "lastTransitionTime": "2020-11-10T11:29:15Z",
+            "reason": "KubeletHasSufficientPID",
+            "message": "kubelet has sufficient PID available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2021-03-18T09:47:08Z",
+            "lastTransitionTime": "2020-12-01T16:57:38Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "InternalIP",
+            "address": "10.0.0.1"
+          },
+          {
+            "type": "Hostname",
+            "address": "10.0.0.1"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "7265fe765262551a676151a24c02b7b6",
+          "systemUUID": "EC2C931D-85C9-9A0B-F5CA-3FE1F4C8C1AB",
+          "bootID": "b0c6f58a-038b-4c99-aea1-56eeaf677b3a",
+          "kernelVersion": "3.10.0-1160.2.2.el7.x86_64",
+          "osImage": "Debian GNU/Linux 9 (stretch)",
+          "containerRuntimeVersion": "docker://18.6.2",
+          "kubeletVersion": "v1.13.13-gravitational.0",
+          "kubeProxyVersion": "v1.13.13-gravitational.0",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+        },
+        "images": [
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0@sha256:0fad31101f86a0ca75d86186798ff84022c89f75cd9d8ed54c544b387e5758f1",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0:20210304-1"
+            ],
+            "sizeBytes": 739033838
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0@sha256:ea26918881e8dc6c8c3a0eaa4939139e3e2dfbb2201bbd94f299efea629048c9",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0:20210119-1"
+            ],
+            "sizeBytes": 707412481
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0@sha256:b2ee0eef4b155e1b1bcd348e363925609c2250a8d7b109e2ab8923fb030cd392",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/poseidon-runtime-4.3.0:20201021"
+            ],
+            "sizeBytes": 706305153
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/dias-anypoint-monitoring-sidecar@sha256:594a45f30d09ae628319d2a538bbc98181c9910a40ac6ebf3aed242878d718a5",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/dias-anypoint-monitoring-sidecar:v1.2.0"
+            ],
+            "sizeBytes": 277656372
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/anypoint-monitoring-sidecar@sha256:93d6f917d1ca215eab1a2555319d5319c482804e48ae27ed677f4972bef2565e",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/anypoint-monitoring-sidecar:v1.1.38"
+            ],
+            "sizeBytes": 232052867
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit@sha256:8578e93bde5286bed905f6dfdeeeb35e67e0a500f517743e7e4c1e067c3b0dea",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit:v1.2.29"
+            ],
+            "sizeBytes": 148795103
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit@sha256:d01c276af88ac3feaadec453a156009f649bceea633654919daa95fe3fb985ec",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit:v1.2.26"
+            ],
+            "sizeBytes": 148048920
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-forwarder@sha256:8b1606f8de127628b403e8327bd51d9f3e890af3a1de12ea30dbf5bc30e9511a",
+              "leader.telekube.local:5000/log-forwarder:5.0.7"
+            ],
+            "sizeBytes": 124318896
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-forwarder@sha256:61277ee6b0816b24e8b7adaa82cbc4ee77c1cca6233619ca003b411f15202d37",
+              "leader.telekube.local:5000/log-forwarder:5.0.6"
+            ],
+            "sizeBytes": 124318896
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-core-actions@sha256:dfbdc082d062ede0a09c665a5faaeeb48eb0f8af89c7d2b48699359d0eca7288",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-core-actions:v1.0.1"
+            ],
+            "sizeBytes": 122838739
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-app-init@sha256:b32fac07716b6978247554e62b94f3adf7538865e3f89b1d7f34ffbf7bd32899",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-app-init:v1.0.23"
+            ],
+            "sizeBytes": 111258991
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-telegraf@sha256:44abd642a1e2a42c9ffe1ba2b4dd43a05ae14b8c7a36aba9c2244bb0d22fb05d",
+              "leader.telekube.local:5000/monitoring-telegraf:5.5.22"
+            ],
+            "sizeBytes": 79685385
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-telegraf@sha256:121e2edb4e763a913f302d184e80c750cf21dfe68c8d8841cb332d0be1ab5a5d",
+              "leader.telekube.local:5000/monitoring-telegraf:5.5.23"
+            ],
+            "sizeBytes": 79685385
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravitational/nethealth-dev@sha256:86615c3d2489aa7a1fc820a4ccb4668cae6b3df8ef7d479555d4caf60ff66007",
+              "leader.telekube.local:5000/gravitational/nethealth-dev:7.1.0"
+            ],
+            "sizeBytes": 52671616
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/coredns/coredns@sha256:5bec1a83dbee7e2c1b531fbc5dc1b041835c00ec249bcf6b165e1d597dd279fa",
+              "leader.telekube.local:5000/coredns/coredns:1.2.6"
+            ],
+            "sizeBytes": 40017418
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gcr.io/google_containers/nettest@sha256:98b0f87c566e8506a0de4234fa0a20f95672d916218cec14c707b1bbdf004b6c",
+              "gcr.io/google_containers/nettest:1.8",
+              "leader.telekube.local:5000/gcr.io/google_containers/nettest:1.8"
+            ],
+            "sizeBytes": 25164808
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gcr.io/google_containers/pause@sha256:f04288efc7e65a84be74d4fc63e235ac3c6c603cf832e442e0bd3f240b10a91b",
+              "gcr.io/google_containers/pause:3.0",
+              "leader.telekube.local:5000/gcr.io/google_containers/pause:3.0"
+            ],
+            "sizeBytes": 746888
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "name": "10.0.0.1",
+        "selfLink": "/api/v1/nodes/10.0.0.1",
+        "uid": "90c9503f-2343-11eb-b260-0af52bfe85b0",
+        "resourceVersion": "17311606",
+        "creationTimestamp": "2020-11-10T10:57:46Z",
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/os": "linux",
+          "gravitational.io/advertise-ip": "10.0.0.1",
+          "gravitational.io/k8s-role": "master",
+          "kubernetes.io/hostname": "10.0.0.1",
+          "node-role.kubernetes.io/master": "true",
+          "role": "controller_node",
+          "rtf.mulesoft.com/ingress": "shared"
+        },
+        "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        }
+      },
+      "spec": {
+        "taints": [
+          {
+            "key": "node-role.kubernetes.io/master",
+            "effect": "NoSchedule"
+          }
+        ]
+      },
+      "status": {
+        "capacity": {
+          "cpu": "2",
+          "ephemeral-storage": "102350Mi",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "7705964Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "cpu": "2",
+          "ephemeral-storage": "101955665841",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "7705964Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "MemoryPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:46:53Z",
+            "lastTransitionTime": "2020-11-10T10:57:46Z",
+            "reason": "KubeletHasSufficientMemory",
+            "message": "kubelet has sufficient memory available"
+          },
+          {
+            "type": "DiskPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:46:53Z",
+            "lastTransitionTime": "2020-11-10T10:57:46Z",
+            "reason": "KubeletHasNoDiskPressure",
+            "message": "kubelet has no disk pressure"
+          },
+          {
+            "type": "PIDPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2021-03-18T09:46:53Z",
+            "lastTransitionTime": "2020-11-10T10:57:46Z",
+            "reason": "KubeletHasSufficientPID",
+            "message": "kubelet has sufficient PID available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2021-03-18T09:46:53Z",
+            "lastTransitionTime": "2021-02-17T15:44:01Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "InternalIP",
+            "address": "10.0.0.1"
+          },
+          {
+            "type": "Hostname",
+            "address": "10.0.0.1"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "7265fe765262551a676151a24c02b7b6",
+          "systemUUID": "EC2E30AA-4E21-FBAB-ADB9-6C4271FB0D12",
+          "bootID": "c306c35e-52ba-49dc-ae3a-eb429e4f44c2",
+          "kernelVersion": "3.10.0-1160.15.2.el7.x86_64",
+          "osImage": "Debian GNU/Linux 9 (stretch)",
+          "containerRuntimeVersion": "docker://18.6.2",
+          "kubeletVersion": "v1.13.13-gravitational.0",
+          "kubeProxyVersion": "v1.13.13-gravitational.0",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+        },
+        "images": [
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/securityfabric-edge@sha256:cf3207babe49b708c4b69f2e10f5a07bfe4b1ce242146ce9edfe20f61554ba03",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/securityfabric-edge:v1.1.325"
+            ],
+            "sizeBytes": 1340529109
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/base-image-nginx-1.17.8@sha256:07edec21b565b2f59325fc46cb4479549e645b023d73bf65954df39d3753fa66",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/base-image-nginx-1.17.8:v1.0.10"
+            ],
+            "sizeBytes": 695192939
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/rtf-upgrade@sha256:e7113ee9ce0be5873a213aa2868099864365299495bd6cd05b7608c52148c973",
+              "leader.telekube.local:5000/rtf-upgrade:latest"
+            ],
+            "sizeBytes": 596306477
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/rtf-upgrade@sha256:7baef021331cd6e5c45623fa99c9b6770b0871a73de15127129f00a4492c3cdb"
+            ],
+            "sizeBytes": 592577291
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/rtf-upgrade@sha256:ada87cda65502495afcb4cef4f49be638174f46b8e811f5e29d83121210555e7"
+            ],
+            "sizeBytes": 584949172
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-mule-clusterip-service@sha256:03b11f0896f76d4f315bff5c91c542a686c48dcc449222e4cc759f6d489bcf4b",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-mule-clusterip-service:v1.2.12"
+            ],
+            "sizeBytes": 488850418
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-cluster-ops@sha256:9b6846fa82fa9893000f38b97ec8c1083b63a0e241d2538a4830fb57a4175cbb",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-cluster-ops:v1.0.151"
+            ],
+            "sizeBytes": 380069895
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-cluster-ops@sha256:41da9279ad0c225125258d48137d94d010f61b46f93e48130d38dbbe5bc44505",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-cluster-ops:v1.0.147"
+            ],
+            "sizeBytes": 379860369
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-cluster-ops@sha256:c059e262dad7276ac5f528a20e4a18da9c0b2384c56dbaeca42b62b47bb1b8de",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-cluster-ops:v1.0.139"
+            ],
+            "sizeBytes": 379819309
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-agent@sha256:98c478b7d7ddc895401fdb6590bef4b962286f925af526f15046fcfeb3238964",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-agent:v1.8.23"
+            ],
+            "sizeBytes": 280308562
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-agent@sha256:68568649e263a8e4982d3480ecdec9a0cb17ce886f27fe164a8bd838cd2ed043",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-agent:v1.8.0"
+            ],
+            "sizeBytes": 280305058
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-agent@sha256:447303e8f03e0e70aef3889b6b42cb6416b783dc53f11655a023f79a7534dfa1",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-agent:v1.7.41"
+            ],
+            "sizeBytes": 280290120
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-collector@sha256:e520df46ca4656790957b7a147a923ce1ceaca1abb4fcb7b9809441078c29956",
+              "leader.telekube.local:5000/log-collector:5.0.6"
+            ],
+            "sizeBytes": 259626874
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-collector@sha256:5ac98559f2b1960dacfd9c1f139846b9a5ba0251c38b0c7af4630c6439805134",
+              "leader.telekube.local:5000/log-collector:5.0.7"
+            ],
+            "sizeBytes": 259626874
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-grafana@sha256:71f4716ea8189a2ebfa3abfc821ec52edff181e43579badde6e9a8a0f29f3246",
+              "leader.telekube.local:5000/monitoring-grafana:5.5.23"
+            ],
+            "sizeBytes": 252108513
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-grafana@sha256:461a432d11c27c67b61395aa3d22b9728307a4a00aa2b8c4e7e1b290a7fbb0eb",
+              "leader.telekube.local:5000/monitoring-grafana:5.5.22"
+            ],
+            "sizeBytes": 252089361
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit@sha256:8578e93bde5286bed905f6dfdeeeb35e67e0a500f517743e7e4c1e067c3b0dea",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit:v1.2.29"
+            ],
+            "sizeBytes": 148795103
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit@sha256:d01c276af88ac3feaadec453a156009f649bceea633654919daa95fe3fb985ec",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-pkg-fluentbit:v1.2.26"
+            ],
+            "sizeBytes": 148048920
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/site-app-hook@sha256:bf2893adacb1517399ec8122625ce956093892cb07287aed22bf56ea6b36ff99",
+              "leader.telekube.local:5000/site-app-hook:5.5.55"
+            ],
+            "sizeBytes": 138802393
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/site-app-hook@sha256:a7d661e81dec664ab48c1282c15658ad517e624818336c57b2c14fc7076c0ec1",
+              "leader.telekube.local:5000/site-app-hook:5.5.56"
+            ],
+            "sizeBytes": 138802393
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/dns-app-hooks@sha256:7528655e07ed4b040e458ab8f1fe63b6d4ac1758e53baae82cc188f1f836edcf",
+              "leader.telekube.local:5000/dns-app-hooks:0.3.2"
+            ],
+            "sizeBytes": 138801568
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/dns-app-hooks@sha256:99bc820e604cd5ccfc8bb0acae257f199c8e2a34faa55e3754f7771ff9dba226",
+              "leader.telekube.local:5000/dns-app-hooks:0.3.1"
+            ],
+            "sizeBytes": 138801568
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-hook@sha256:1d3d96d45f13df133e2756ace1df8b43ec5cf877920cee296632139a77c2acfa",
+              "leader.telekube.local:5000/log-hook:5.0.7"
+            ],
+            "sizeBytes": 136482359
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-hook@sha256:35d53a8ba7015b9d368ffa270a2da8a6f86d5d4bd20b8a6c95618b0c67223b05",
+              "leader.telekube.local:5000/log-hook:5.0.6"
+            ],
+            "sizeBytes": 136482359
+          },
+          {
+            "names": [
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-resource-fetcher@sha256:b006734a25699b727c6b9b2bd1f324fc3df295051f76130a2b4b8a73350450e6",
+              "dkr.ecr.us-east-1.amazonaws.com/mulesoft/rtf-resource-fetcher:v1.0.20"
+            ],
+            "sizeBytes": 124644217
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-forwarder@sha256:8b1606f8de127628b403e8327bd51d9f3e890af3a1de12ea30dbf5bc30e9511a",
+              "leader.telekube.local:5000/log-forwarder:5.0.7"
+            ],
+            "sizeBytes": 124318896
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/log-forwarder@sha256:61277ee6b0816b24e8b7adaa82cbc4ee77c1cca6233619ca003b411f15202d37",
+              "leader.telekube.local:5000/log-forwarder:5.0.6"
+            ],
+            "sizeBytes": 124318896
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-kapacitor@sha256:d90f2e2fa0628c0260f29c6c9c6051215bd1a62de36868a3b3a9a1ab27ae8dcc",
+              "leader.telekube.local:5000/monitoring-kapacitor:5.5.22"
+            ],
+            "sizeBytes": 114303076
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-kapacitor@sha256:46f3b6183871d5a5eb5c2df421fae00a7851ee3572fd031f8fb68a88af0dc0b2",
+              "leader.telekube.local:5000/monitoring-kapacitor:5.5.23"
+            ],
+            "sizeBytes": 114303076
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravity-site@sha256:e46019f9e7e6b38348c276f1454602f4968c0af9c07e8d61e5a6acc66b4f9308",
+              "leader.telekube.local:5000/gravity-site:5.5.55"
+            ],
+            "sizeBytes": 112623778
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravity-site@sha256:fb581a40de4143134f496eb430fc10068f2be841cc01fa0de53f97ae4f9c8fc4",
+              "leader.telekube.local:5000/gravity-site:5.5.56"
+            ],
+            "sizeBytes": 112623778
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravity-site@sha256:49480da91568f52538d0e5cd468824d175a480059da0a173f3c1a5780646af48",
+              "leader.telekube.local:5000/gravity-site:5.5.52"
+            ],
+            "sizeBytes": 112574594
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-hook@sha256:ddb7f5dba40f972b1db69c78ed465df6435477716ecef2a76dd69c774f5a8df0",
+              "leader.telekube.local:5000/monitoring-hook:5.5.23"
+            ],
+            "sizeBytes": 106374855
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/kubernetes-helm/tiller@sha256:455eb5c38e532934a393e47df705294588acd671ddb5a01c9898e42ae36114fb",
+              "leader.telekube.local:5000/kubernetes-helm/tiller:v2.12.3"
+            ],
+            "sizeBytes": 81415168
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-telegraf@sha256:44abd642a1e2a42c9ffe1ba2b4dd43a05ae14b8c7a36aba9c2244bb0d22fb05d",
+              "leader.telekube.local:5000/monitoring-telegraf:5.5.22"
+            ],
+            "sizeBytes": 79685385
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-telegraf@sha256:121e2edb4e763a913f302d184e80c750cf21dfe68c8d8841cb332d0be1ab5a5d",
+              "leader.telekube.local:5000/monitoring-telegraf:5.5.23"
+            ],
+            "sizeBytes": 79685385
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/rtf-post-install@sha256:47cd6401aa2fc524e68622390e2a379f5c9f8e42630616e067a9ad82c1551d55",
+              "leader.telekube.local:5000/rtf-post-install:1.1.1606942735-3f99c37"
+            ],
+            "sizeBytes": 73271013
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/rtf-post-install@sha256:815f23163d1408adbe0f38a76cb2ce5d4f30c86d3f9873adc7be66d3fffe17b3",
+              "leader.telekube.local:5000/rtf-post-install:1.1.1603929599-47b2888"
+            ],
+            "sizeBytes": 73270110
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/rtf-post-install@sha256:b7444ba9debbe3b9911c7aa7a95b7bf239b2713abd4e67b31f193d5511f7033b",
+              "leader.telekube.local:5000/rtf-post-install:1.1.1599670979-d08f56e"
+            ],
+            "sizeBytes": 73270102
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/watcher@sha256:48f10fc0c877058a6ad7bf205a69cddba2c9413e4d35337f6c6970791b141ca5",
+              "leader.telekube.local:5000/watcher:5.5.23"
+            ],
+            "sizeBytes": 57271131
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/watcher@sha256:06ee6b3189a6bd3f45f79fd8374f9684a206cb2264ba952b6a271935dd55d46d",
+              "leader.telekube.local:5000/watcher:5.5.22"
+            ],
+            "sizeBytes": 57271131
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-heapster@sha256:94896e5c0cb18e1d418c2046e13b17b863785597cc8178c9bc04ffa653326c9a",
+              "leader.telekube.local:5000/monitoring-heapster:5.5.22"
+            ],
+            "sizeBytes": 52700735
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-heapster@sha256:7f580dd258d28cc7845f3ea2fc62f00ac2cc660cfe0c68c6026cfc422e8d5257",
+              "leader.telekube.local:5000/monitoring-heapster:5.5.23"
+            ],
+            "sizeBytes": 52700735
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravitational/nethealth-dev@sha256:86615c3d2489aa7a1fc820a4ccb4668cae6b3df8ef7d479555d4caf60ff66007",
+              "leader.telekube.local:5000/gravitational/nethealth-dev:7.1.0"
+            ],
+            "sizeBytes": 52671616
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/coredns/coredns@sha256:5bec1a83dbee7e2c1b531fbc5dc1b041835c00ec249bcf6b165e1d597dd279fa",
+              "leader.telekube.local:5000/coredns/coredns:1.2.6"
+            ],
+            "sizeBytes": 40017418
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-influxdb@sha256:ab6186babd26bb8ce61eaea01eda3f9be8895a32465a3be101fbeaaa9e7d4ab1",
+              "leader.telekube.local:5000/monitoring-influxdb:5.5.23"
+            ],
+            "sizeBytes": 32303780
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/monitoring-influxdb@sha256:de88633b3613c0f565b126cc488368d0c263334cac929a8b4f9edcc5db872300",
+              "leader.telekube.local:5000/monitoring-influxdb:5.5.22"
+            ],
+            "sizeBytes": 32303780
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gcr.io/google_containers/nettest@sha256:98b0f87c566e8506a0de4234fa0a20f95672d916218cec14c707b1bbdf004b6c",
+              "gcr.io/google_containers/nettest:1.8",
+              "leader.telekube.local:5000/gcr.io/google_containers/nettest:1.8"
+            ],
+            "sizeBytes": 25164808
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravitational/debian-tall@sha256:53ea1f48e78071ffde6ffedea34c364433a0d492f2ff1c68d5f4c9af0c8ddfe0",
+              "leader.telekube.local:5000/gravitational/debian-tall@sha256:fcbe7f740841dd1c3d4d6b2f16a4449068505457278917e217414c21bb3a4457"
+            ],
+            "sizeBytes": 11186931
+          },
+          {
+            "names": [
+              "leader.telekube.local:5000/gravitational/debian-tall@sha256:0c5a2c6f11cf4f1f1aefeaf65f3661be497d54cae0177b963c23faaaab5133ed"
+            ],
+            "sizeBytes": 11186931
+          }
+        ]
+      }
+    }
+  ]
+}
