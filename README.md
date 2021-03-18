@@ -193,5 +193,8 @@ You are now ready to deploy the usage application into your Runtime Fabric clust
 
 7) Click **Deploy application** to upload the application JAR and deploy this to your Runtime Fabric cluster. This may take a few minutes.
 
+![Deployed application in Runtime Manager](docs/install_deployed_app.png "Runtime Manager")
+
 8) Once the deployment is complete, you should be able to call your application using a test client, such as Postman or cURL. You may need to pass Authorization headers depending on your API policy configuration. If you are unable to connect, or get an error, please consult your application logs to ascertain the reason for the failure.
 
+![Testing in Postman](docs/install_test_call.png "Testing in Postman")
