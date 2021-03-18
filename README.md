@@ -171,11 +171,19 @@ You are now ready to deploy the usage application into your Runtime Fabric clust
 
 3) Enter the application name, it is suggested to use `mule-rtf-usage-v1-<rtf_name>` where rtf_name is an identifier for your RTF cluster. This is useful if you have multiple RTF clusters. Select your RTF cluster as the Deployment Target, then click **Choose file** to browse to the downloaded application JAR file.
 
-4) The Runtime version should be `4.3.0` (or above). The following additional settings are recommended but may be tuned according to your organization's needs or preferences. Replicas: `1`; Deployment model: `Rolling update`; Reserved CPU: `0.2`; CPU limit: `0.5`; Memory: `0.7`.
+4) The Runtime version should be `4.3.0` (or above). The following additional settings are recommended but may be tuned according to your organization's needs or preferences.
+  - Replicas: `1`
+  - Deployment model: `Rolling update`
+  - Reserved CPU: `0.2` vCPU
+  - CPU limit: `0.5` vCPU
+  - Memory: `1.0` GB
 
 5) On **Ingress** ensure that **Enable inbound traffic** is selected and select an appropraite public endpoint from the dropdown. Last-mile security is not normally required but can be enabled if required - however this will require associated modifications to the Mule application to provide an HTTPS listener.
 
-6) On **Properties** enter the following properties, using the values you have collected previously. `api.id`: The Autodiscovery ID from the managed API endpoint; `anypoint.platform.client_id`: The client ID for the Anypoint environment; `anypoint.platform.client_secret`: The client secret for the Anypoint environment.
+6) On **Properties** enter the following properties, using the values you have collected previously.
+  - `api.id`: The Autodiscovery ID from the managed API endpoint
+  - `anypoint.platform.client_id`: The client ID for the Anypoint environment
+  - `anypoint.platform.client_secret`: The client secret for the Anypoint environment
 
 7) Click **Deploy application** to upload the application JAR and deploy this to your Runtime Fabric cluster. This may take a few minutes.
 
