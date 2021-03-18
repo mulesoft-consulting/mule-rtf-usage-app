@@ -15,7 +15,7 @@ It is envisaged that most customers will leverage this API to import data into a
 
 ### IMPORTANT
 
-_**This application is not a core part of the MuleSoft API Platform and as such is not warranted nor supported by MuleSoft. It is is provided as an "accelerator" to help existing customers with their day-to-day operations of the Anypoint Platform. MuleSoft Support engineers will not be able to assist with this tool via a Support case. If you require help with using or adapting this application, please speak with your Customer Success representative to engage with MuleSoft Professional Services.**_
+_**This application is not a core part of the MuleSoft Anypoint Platform and as such is not warranted nor supported by MuleSoft. It is is provided as an "accelerator" to help existing customers with their day-to-day operations of the Anypoint Platform. MuleSoft Support engineers will not be able to assist with this tool via a Support case. If you require help with using or adapting this application, please speak with your Customer Success representative to engage with MuleSoft Professional Services.**_
 
 _**Furthermore, no guarantees are made as to the function of this application and customers should review this to ensure it meets their needs prior to use. Specifically, whilst the application is believed functional at the time of release, no guarantees can be made regarding ongoing compatibility with future release of Anypoint Runtime Fabric or its underlying components.**_
 
@@ -26,7 +26,7 @@ The API is deployed into the Runtime Fabric cluster that you wish to monitor. It
 
 The API exposes two resources.
 
-### Nodes `GET /api/nodes`
+### Nodes (`GET /api/nodes`)
 
 This endpoint returns a list of all **worker nodes** that are present in the cluster, along with their maximum available CPU and memory capacity.
 
@@ -48,7 +48,7 @@ Example response:
 ]
 ```
 
-### Pods `GET /api/pods`
+### Pods (`GET /api/pods`)
 
 This endpoint returns a list of all MuleSoft **application pods** or **replicas** that are deployed in the Fabric. It excludes RTF system pods and also any pod that is not marked in a 'ready' state.
 
@@ -141,9 +141,13 @@ First import the API into your Anypoint Exchange.
 
 4) Open the upload dialog and browse to the RAML file in the downloaded application folder: `src/main/resources/api/mule-rtf-usage-api-v1.raml`.
 
+![Publishing the Asset to Anypoint Exchange](docs/install_publish_asset.png "Anypoint Exchange")
+
 5) Click **Publish**.
 
 The RAML will be parsed and then loaded into your organization's Anypoint Exchange.
+
+![The MuleSoft RTF Usage API asset in Anypoint Exchange](docs/install_exchange.png "Anypoint Exchange")
 
 
 ### Create managed API endpoint
@@ -155,6 +159,8 @@ With the API specification now in Anypoint Exchange, we can create the managed A
 2) To create the API endpoint, click **Manage API** and **Manage API from Exchange**.
 
 3) Select or type the name of the API (`MuleSoft RTF Usage API`); Application type as `Mule application`; Select Mule version as `Mule 4 or above`.
+
+![Creating the managed endpoint in API Manager](docs/install_create_api.png "API Manager")
 
 4) Once the API is created, make a note of the API Autodiscovery ID.
 
